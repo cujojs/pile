@@ -1,0 +1,45 @@
+<html>
+<head>
+    <script src="../collections.js"></script>
+    <script src="../Collection.js"></script>
+    <script src="../MutableCollection.js"></script>
+    <script src="../Map.js"></script>
+    <script src="../Set.js"></script>
+
+    <script>
+        function print(s) {
+            console.log(s.length);
+            s.forEach(function(item) { console.log(item); });
+        }
+
+        var s = new Set();
+        console.log(s);
+
+        s.add("foo");
+        s.add("foo");
+        s.add("bar");
+        s.add("baz");
+        s.add("foo");
+        console.log(s.contains('foo'));
+        s.remove('foo');
+        print(s);
+
+        s.add(1);
+        print(s);
+
+        s.add({ a: 1 });
+        print(s);
+
+        s.add({ a: 1 });
+        print(s);
+
+        s.add({ b: 1 });
+        print(s);
+        console.log(s.contains({ b: 1 }));
+
+        s.addAll([2, 3, 4, 5]);
+        print(s);
+
+    </script>
+</head>
+</html>
