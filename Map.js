@@ -1,62 +1,67 @@
 (function(define) {
-    define(['./collections'], function(collections) {
+define([], function() {
 
-        function defaultHasher(key) {
-            return key;
-        }
+    function defaultHasher(item) {
+        return item === Object(item)
+            ? JSON.stringify(item)
+            : item;
+    }
 
-        function Map(hasher) {
-            this._items = {};
-            this.length = 0;
-            this._hasher = hasher || defaultHasher;
-        }
+    function Map(hasher) {
+        this._items = {};
+        this.length = 0;
+        this._hasher = hasher || defaultHasher;
+    }
 
-        Map.prototype = {
-            forEach: function(forEachFunc) {
-                var items = this._items;
+    Map.prototype = {
+        forEach: function(forEachFunc) {
+            var items = this._items;
 
-                for(var key in items) {
-                    forEachFunc(key, items[key]);
-                }
-            },
-
-            add: function(key, value) {
-                var items = this._items;
-
-                key = this._hasher(key);
-
-                if(!(key in items)) {
-                    items[key] = value;
-                    ++this.length;
-                }
-            },
-
-            contains: function(key) {
-                key = this._hasher(key);
-                return key in this._items;
-            },
-
-            remove: function(key) {
-                var items = this._items;
-
-                key = this._hasher(key);
-
-                if(key in items) {
-                    delete items[key];
-                    --this.length;
-                }
+            for(var key in items) {
+                forEachFunc(key, items[key]);
             }
-        };
+        },
 
-        return Map;
+        add: function(key, value) {
+            var items = this._items;
 
-    });
-})(typeof define != 'undefined'
-    // use define for AMD if available
-    ? define
-    // If no define, look for module to export as a CommonJS module.
-    // If no define or module, attach to current context.
-    : typeof module != 'undefined'
-    ? function(deps, factory) { module.exports = factory.apply(this, deps.map(require)); }
-    : function(deps, factory) { this.Map = factory(this.collections); }
-);
+            key = this._hasher(key);
+
+            if(!(key in items)) {
+                items[key] = value;
+                ++this.length;
+            }
+
+            return this.length;
+        },
+
+        contains: function(key) {
+            key = this._hasher(key);
+            return key in this._items;
+        },
+        
+        get: function(key) {
+            return this._items[this._hasher(key)];
+        },
+
+        remove: function(key) {
+            var items, removed;
+
+            items = this._items;
+
+            key = this._hasher(key);
+
+            if (key in items) {
+                removed = items[key];
+                delete items[key];
+                --this.length;
+            }
+
+            return removed;
+        }
+    };
+
+    return Map;
+
+});
+})(typeof define != 'undefined' ? define : function(deps, factory) { module.exports = factory(); });

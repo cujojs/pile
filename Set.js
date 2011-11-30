@@ -1,48 +1,38 @@
 (function(define) {
-define(['./collections', './MutableCollection', './Map'],
-function(collections, MutableCollection, Map) {
+define(['./pile', './MutableCollection', './Map'],
+function(pile, MutableCollection, Map) {
+    
+    var mapProto, forEach, add, contains, remove;
 
-    function defaultHasher(item) {
-        return item === Object(item)
-            ? JSON.stringify(item)
-            : item;
-    }
+    // Borrow from Map
+    mapProto = Map.prototype;
+    forEach  = mapProto.forEach;
+    add      = mapProto.add;
+    contains = mapProto.contains;
+    remove   = mapProto.remove;
 
     function Set(hasher) {
-        this._map = new Map(hasher || defaultHasher);
+        Map.call(this, hasher);
     }
 
-    Set.prototype = collections.extend(MutableCollection, {
+    Set.prototype = pile.extend(MutableCollection, {
+
         forEach: function(forEachFunc) {
-            return this._map.forEach(function(k, v) {
+            return forEach.call(this, function(k, v) {
                 forEachFunc(v);
             });
         },
 
         add: function(item) {
-            this._map.add(item, item);
-            this.length = this._map.length;
+            return add.call(this, item, item);
         },
 
-        contains: function(item) {
-            return this._map.contains(item);
-        },
+        contains: contains,
 
-        remove: function(item) {
-            this._map.remove(item);
-            this.length = this._map.length;
-        }
+        remove: remove
     });
 
     return Set;
 
 });
-})(typeof define != 'undefined'
-    // use define for AMD if available
-    ? define
-    // If no define, look for module to export as a CommonJS module.
-    // If no define or module, attach to current context.
-    : typeof module != 'undefined'
-    ? function(deps, factory) { module.exports = factory.apply(this, deps.map(require)); }
-    : function(deps, factory) { this.Set = factory(this.collections, this.MutableCollection, this.Map); }
-);
+})(typeof define != 'undefined' ? define : function(deps, factory) { module.exports = factory.apply(this, deps.map(require)); });
