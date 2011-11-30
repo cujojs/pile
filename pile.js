@@ -18,13 +18,5 @@ define([], function() {
             return mixin(extensions, baseModel);
         }
     }
-})
-})(typeof define != 'undefined'
-    // use define for AMD if available
-    ? define
-    // If no define, look for module to export as a CommonJS module.
-    // If no define or module, attach to current context.
-    : typeof module != 'undefined'
-    ? function(deps, factory) { module.exports = factory.apply(this, deps.map(require)); }
-    : function(deps, factory) { this.collections = factory(this.collections, this.MutableCollection); }
-);
+});
+})(typeof define != 'undefined' ? define : function(deps, factory) { module.exports = factory(); });
