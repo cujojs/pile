@@ -1,16 +1,10 @@
 (function(define) {
-define([], function() {
-
-    function defaultHasher(item) {
-        return item === Object(item)
-            ? JSON.stringify(item)
-            : item;
-    }
+define(['./hash'], function(hash) {
 
     function Map(hasher) {
         this._items = {};
         this.length = 0;
-        this._hasher = hasher || defaultHasher;
+        this._hasher = hasher || hash.base;
     }
 
     Map.prototype = {
@@ -20,18 +14,19 @@ define([], function() {
             for(var key in items) {
                 forEachFunc(key, items[key]);
             }
+
+            // TODO: return this?
         },
 
         add: function(key, value) {
             var items = this._items;
 
-            key = this._hasher(key);
-
-            if(!(key in items)) {
+            if(!this.contains(key)) {
                 items[key] = value;
                 ++this.length;
             }
 
+            // TODO: return this?
             return this.length;
         },
 
@@ -57,6 +52,7 @@ define([], function() {
                 --this.length;
             }
 
+            // TODO: return this?
             return removed;
         }
     };
@@ -64,4 +60,4 @@ define([], function() {
     return Map;
 
 });
-})(typeof define != 'undefined' ? define : function(deps, factory) { module.exports = factory(); });
+})(typeof define != 'undefined' ? define : function(deps, factory) { module.exports = factory.apply(this, deps.map(require)); });
