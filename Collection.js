@@ -55,8 +55,31 @@ define([], function() {
         
         some: function(matchFunc) {
             // unimplemented
-        }
+        },
+
+		join: function(separator) {
+			var str, useSeparator;
+
+			str = '';
+			this.forEach(function(item) {
+				if(useSeparator) {
+					str += separator;
+				} else {
+					useSeparator = true;
+				}
+
+				str += item;
+			});
+
+			return str;
+
+		},
+
+		toString: function() {
+			return '[' + this.join(', ') + ']';
+		}
+
     }
-})
+});
 })(typeof define != 'undefined' ? define : function(deps, factory) { module.exports = factory(); }
 );

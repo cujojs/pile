@@ -9,13 +9,27 @@ define([], function() {
                 dst[s] = src[s];
             }
         }
-        
+
         return dst;
     }
 
     return {
-        extend: function(baseModel, extensions) {
-            return mixin(extensions, baseModel);
+        extend: function(src1 /*, src2, src3... */) {
+			var result, src, i;
+
+			result = {};
+
+			for(i = arguments.length - 1; i >= 0; --i) {
+				src = arguments[i];
+				result = mixin(result, src);
+
+				if(src.hasOwnProperty('toString') && typeof src.toString === 'function') {
+					result.toString = src.toString;
+				}
+
+			}
+
+			return result;
         }
     }
 });
