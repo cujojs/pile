@@ -8,21 +8,36 @@ define(['./pile', './Collection'], function(pile, Collection) {
     return pile.extend(Collection, {
         add: subtypeMustImplement,
         
-        addAll: function(iterable) {
-            var self = this;
-            iterable.forEach(function(item) { self.add(item); });
-        },
-
         contains: subtypeMustImplement,
 
         remove: subtypeMustImplement,
-        
+
+		addAll: function(iterable) {
+			var self = this;
+			iterable.forEach(function(item) { self.add(item); });
+		},
+
         removeAll: function(iterable) {
             var self = this;
             iterable.forEach(function(item) { self.remove(item); });
         },
-        
-        retainAll: subtypeMustImplement
+
+		/**
+		 * Default implementation of retainAll.  This implementation is likely
+		 * inefficient for many collection types, and subtypes should override
+		 * with a more efficient implementation.
+		 *
+		 * @param iterable
+		 */
+		retainAll: function(iterable) {
+			// Very inefficient default implementation.
+			var self = this;
+			iterable.forEach(function(item) {
+				if(!self.contains(item)) {
+					self.remove(item);
+				}
+			})
+		}
     });
 
 })

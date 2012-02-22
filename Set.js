@@ -30,6 +30,7 @@ function(pile, MutableCollection, Map) {
         contains: contains,
 
         remove: remove
+
     });
 
     return Set;

@@ -77,6 +77,16 @@ define([], function() {
 
 		toString: function() {
 			return '[' + this.join(', ') + ']';
+		},
+
+		toArray: function() {
+			var array = [];
+
+			this.forEach(function(item) {
+				array.push(item);
+			});
+
+			return array;
 		}
 
     }
