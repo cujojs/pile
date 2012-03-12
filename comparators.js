@@ -22,6 +22,7 @@ define(function() {
 			}
 		},
 
+		// TODO: Move these to a string-specific comparator module, or put each in its own module.
 		strings: {
 			locale: function compare(a, b) {
 				return a.localeCompare(b);

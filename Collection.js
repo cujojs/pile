@@ -1,61 +1,61 @@
 (function(define) {
 define([], function() {
-    
-    function array(n) {
-        return new Array(n);
-    }
-    
-    return {
-        map: function(mapFunc) {
-            var results, i;
 
-            i = 0;
-            results = array(this.length);
+	function array(n) {
+		return new Array(n);
+	}
 
-            this.forEach(function(item) {
-                results[i++] = mapFunc(item);
-            });
+	return {
+		map: function(mapFunc) {
+			var results, i;
 
-            return results;
-        },
+			i = 0;
+			results = array(this.length);
 
-        filter: function(filterFunc) {
-            var results, i;
+			this.forEach(function(item) {
+				results[i++] = mapFunc(item);
+			});
 
-            i = 0;
-            results = array(this.length);
+			return results;
+		},
 
-            this.forEach(function(item) {
-                if(filterFunc(item)) {
-                    results[i++] = item;
-                }
-            });
+		filter: function(filterFunc) {
+			var results, i;
 
-            return results;
+			i = 0;
+			results = array(this.length);
 
-        },
-        
-        reduce: function(reduceFunc, initialValue) {
-            var result, self, i;
-            
-            i = 0;
-            self = this;
-            result = initialValue;
-            
-            this.forEach(function(item) {
-                result = reduceFunc(result, item, i++, self);
-            });
-            
-            return result;
-        },
-        
-        every: function(matchFunc) {
-            // unimplemented
-        },
-        
-        some: function(matchFunc) {
-            // unimplemented
-        },
+			this.forEach(function(item) {
+				if(filterFunc(item)) {
+					results[i++] = item;
+				}
+			});
+
+			return results;
+
+		},
+
+		reduce: function(reduceFunc, initialValue) {
+			var result, self, i;
+
+			i = 0;
+			self = this;
+			result = initialValue;
+
+			this.forEach(function(item) {
+				result = reduceFunc(result, item, i++, self);
+			});
+
+			return result;
+		},
+
+		every: function(matchFunc) {
+			// unimplemented
+		},
+
+		some: function(matchFunc) {
+			// unimplemented
+		},
 
 		join: function(separator) {
 			var str, useSeparator;
@@ -89,7 +89,7 @@ define([], function() {
 			return array;
 		}
 
-    }
+	}
 });
 })(typeof define != 'undefined' ? define : function(deps, factory) { module.exports = factory(); }
 );
