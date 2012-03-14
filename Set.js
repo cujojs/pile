@@ -2,7 +2,7 @@
 define(['./pile', './MutableCollection', './Map'],
 function(pile, MutableCollection, Map) {
     
-    var mapProto, forEach, add, contains, remove;
+    var mapProto, forEach, add, contains, _containsKey, remove;
 
     // Borrow from Map
     mapProto = Map.prototype;
@@ -10,6 +10,7 @@ function(pile, MutableCollection, Map) {
     add      = mapProto.add;
     contains = mapProto.contains;
     remove   = mapProto.remove;
+	_containsKey = mapProto._containsKey;
 
     function Set(hasher) {
         Map.call(this, hasher);
@@ -28,6 +29,7 @@ function(pile, MutableCollection, Map) {
         },
 
         contains: contains,
+		_containsKey: _containsKey,
 
         remove: remove
 

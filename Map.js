@@ -21,7 +21,9 @@ define(['./hash'], function(hash) {
         add: function(key, value) {
             var items = this._items;
 
-            if(!this.contains(key)) {
+			key = this._hasher(key);
+
+            if(!this._containsKey(key)) {
                 items[key] = value;
                 ++this.length;
             }
@@ -31,9 +33,12 @@ define(['./hash'], function(hash) {
         },
 
         contains: function(key) {
-            key = this._hasher(key);
-            return key in this._items;
+			return this._containsKey(this._hasher(key));
         },
+
+		_containsKey: function(key) {
+			return key in this._items;
+		},
         
         get: function(key) {
             return this._items[this._hasher(key)];
